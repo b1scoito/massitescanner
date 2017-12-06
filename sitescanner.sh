@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#"${Red}[${Green}+${Red}
-
 Black='\033[1;30m'
 Red='\033[1;31m'
 Green='\033[1;32m'
@@ -10,6 +8,7 @@ Blue='\033[1;34m'
 Purple='\033[1;35m'
 Cyan='\033[1;36m'
 White='\033[1;37m'
+Reset='ESC[m'
 
 if [ $(id -u) != 0 ]
 then
@@ -32,7 +31,7 @@ echo ""
 echo "[*] Fechando todos servicos , Wait  ..."
 sleep 1
 echo ""
-echo "[*] Obrigado por usar o skype arch!  =)."
+echo "[*] Obrigado por usar o mass site scanner!  =)."
 echo ""
 exit
 }
@@ -44,7 +43,7 @@ echo "| |_) | | ___) | |__| |_| | |  | |/ ___ \ |_| |"
 echo "|____/___|____/ \____\___/___| |_/_/   \_\___/ "
 echo ""
 echo ""
-echo "Scanner site, By: Biscoitao"
+echo "Mass Scanner site, By: Biscoitao"
 echo "Greetz: Last, Bacon, Inocent, b33ck, ang33l, v4p0r, d3z3n0v3."
 
 
@@ -61,6 +60,7 @@ wpscan='/usr/bin/wpscan'
 sslscan='/usr/bin/sslscan'
 sslyze='/usr/bin/sslyze'
 echo -e "${Red}[${Green}+${Red}] Checando diretorios! . . ."
+sleep 1
 if [ -e $whois ];then echo -e "${Red}[${Green}+${Red}] Whois Encontrado!";else echo -e "${Red}[${Green}x${Red}] Whois nao encontrado, baixando." && sudo apt-get install whois -y > /dev/null;fi
 sleep 1
 if [ -e $nslookup ];then echo -e "${Red}[${Green}+${Red}] Nslookup Encontrado!";else echo -e "${Red}[${Green}x${Red}] Nslookup nao encontrado, baixando." && sudo apt-get install nslookup -y > /dev/null;fi
@@ -90,16 +90,90 @@ if [ -e $sslyze ];then echo -e "${Red}[${Green}+${Red}] Sslyze Encontrado!";else
 echo "Coloque aqui o site que deseja atacar: "
 read RESPOSTA
 #----------------------------------------------
-echo -e ${Green}
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|            Whois            |"
+echo "|                             |"
+echo "+-----------------------------+"
 whois $RESPOSTA
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|          Nslookup           |"
+echo "|                             |"
+echo "+-----------------------------+"
 nslookup $RESPOSTA
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|             Nmap            |"
+echo "|                             |"
+echo "+-----------------------------+"
 sudo nmap -v -O $RESPOSTA
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|          Harvester          |"
+echo "|                             |"
+echo "+-----------------------------+"
 theharvester -d $RESPOSTA -l 500 -b google
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|         Metagoofil          |"
+echo "|                             |"
+echo "+-----------------------------+"
 metagoofil -d $RESPOSTA -t doc,pdf,xls,csv,txt -l 200 -n 50 -o metagoofiles -f scan.html
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|          Dnsrecon           |"
+echo "|                             |"
+echo "+-----------------------------+"
 sudo dnsrecon -d $RESPOSTA
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|          Sublist3r          |"
+echo "|                             |"
+echo "+-----------------------------+"
 sublist3r --domain $RESPOSTA
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|           wafw00f           |"
+echo "|                             |"
+echo "+-----------------------------+"
 sudo wafw00f http://$RESPOSTA
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|           Whatweb           |"
+echo "|                             |"
+echo "+-----------------------------+"
 whatweb $RESPOSTA
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|            WPScan           |"
+echo "|                             |"
+echo "+-----------------------------+"
 sudo wpscan --url http://$RESPOSTA --enumerate u
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|           SSLScan           |"
+echo "|                             |"
+echo "+-----------------------------+"
 sslscan $RESPOSTA
+echo -e "${Red}"
+echo "+-----------------------------+"
+echo "|                             |"
+echo "|            SSLyze           |"
+echo "|                             |"
+echo "+-----------------------------+"
 sslyze --resum --compression --reneg --sslv2 --sslv3 --hide_rejected_ciphers $RESPOSTA
+
+# Movendo Arquivos metagoofils
+sudo mv scan.html metagoofiles
